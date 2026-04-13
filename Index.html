@@ -16,6 +16,13 @@
                 titlen: {{song.title}} artist: {{song.artist}} duration: {{song.duration}} Published: {{song.publicationYear}} Id: {{song.id}} 
             </li>
         </ul>
+
+            <h2>Add a new song</h2>
+            <input v-model="adddata.title" placeholder="Title">
+            <input v-model="adddata.artist" placeholder="Artist">
+            <input v-model="adddata.duration" placeholder="Duration">
+            <input v-model="adddata.publicationYear" placeholder="Publication Year">
+            <button v-on:click="add">Add Song</button>
     </div>
     <script src="index.js"></script>
 </body>
