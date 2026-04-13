@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    
+    <h1>DR Songs</h1>
+    <div id="app">
+        <button v-on:click="getAll">getAll</button>
+        <ul>
+            <li v-for="song in songs">
+                titlen: {{song.title}} artist: {{song.artist}} duration: {{song.duration}} Published: {{song.publicationYear}} Id: {{song.id}} 
+            </li>
+        </ul>
+    </div>
+    <script src="index.js"></script>
 </body>
 </html>
