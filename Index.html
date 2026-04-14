@@ -10,6 +10,10 @@
 <body>
     <h1>DR Songs</h1>
     <div id="app">
+        <h2>Search Songs</h2>
+    <input v-model="search" placeholder="Search by title or artist">
+    <button v-on:click="getAll">Search</button>
+    <button v-on:click="search=''; getAll()">Reset</button>
         <button v-on:click="getAll">getAll</button>
         <ul>
             <li v-for="song in songs">

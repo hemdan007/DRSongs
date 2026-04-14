@@ -13,17 +13,19 @@ Vue.createApp({
                }
     },
     methods: {
-        // get all Method
-                async getAll() {
-                    try {
-                        const response = await axios.get(this.baseUrl);
-                        this.songs = response.data;
-                    }
-                    catch{
-                        alert("error!")
-                    }
-                },
-                //add method
+ // Get all songs with optional filtering
+        async getAll() {
+            try {
+                const response = await axios.get(this.baseUrl, {
+                    params: { search: this.search }
+                });
+                this.songs = response.data;
+            }
+            catch (error) {
+                console.error(error);
+                alert("Error retrieving songs!");
+            }
+        },                //add method
                 async add() {
                     try {
                         
