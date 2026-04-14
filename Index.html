@@ -1,33 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
     <h1>DR Songs</h1>
     <div id="app">
+        <h1>Authentication</h1>
+        <div v-if="!loggedIn">
+            <input v-model="auth.username" placeholder="Username" type="text">
+            <input v-model="auth.password" placeholder="Password" type="password">
+            <button @click="login">Login</button>
+            <p v-if="authMessage">{{ authMessage }}</p>
+        </div>
+        <div v-else>
+            <p>
+                Logged in as {{ auth.username }}, role: {{ role }}
+                <button @click="logout">Logout</button>
+            </p>
+        </div>
         <h2>Search Songs</h2>
-    <input v-model="search" placeholder="Search by title or artist">
-    <button v-on:click="getAll">Search</button>
-    <button v-on:click="search=''; getAll()">Reset</button>
+        <input v-model="search" placeholder="Search by title or artist">
+        <button v-on:click="getAll">Search</button>
+        <button v-on:click="search=''; getAll()">Reset</button>
         <button v-on:click="getAll">getAll</button>
         <ul>
             <li v-for="song in songs">
-                titlen: {{song.title}} artist: {{song.artist}} duration: {{song.duration}} Published: {{song.publicationYear}} Id: {{song.id}} 
+                titlen: {{song.title}} artist: {{song.artist}} duration: {{song.duration}} Published:
+                {{song.publicationYear}} Id: {{song.id}}
             </li>
         </ul>
-
+        <div v-if="role === 'Admin'">
             <h2>Add a new song</h2>
             <input v-model="adddata.title" placeholder="Title">
             <input v-model="adddata.artist" placeholder="Artist">
             <input v-model="adddata.duration" placeholder="Duration">
             <input v-model="adddata.publicationYear" placeholder="Publication Year">
             <button v-on:click="add">Add Song</button>
-    </div>
-    <script src="index.js"></script>
+        </div>
+        <script src="index.js"></script>
 </body>
+
 </html>

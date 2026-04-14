@@ -1,42 +1,89 @@
 Vue.createApp({
     data() {
         return {
-                    songs: [] ,
-                    baseUrl: " http://localhost:5121/api/songs" ,
-                    adddata: {
-                        title: "",
-                        artist: "",
-                        duration: "",
-                        publicationYear: ""
-                    }
-
-               }
+            songs: [],
+            baseUrl: "http://localhost:5121/api/songs",
+            authurl: "http://localhost:5121/api/auth/login",
+            search: "",
+            adddata: {
+                title: "",
+                artist: "",
+                duration: "",
+                publicationYear: ""
+            },
+            auth: {
+                username: "",
+                password: ""
+            },
+            authMessage: "",
+            jwtToken: "",
+            role: null,
+            loggedIn: false,
+            message: ""
+        }
     },
     methods: {
- // Get all songs with optional filtering
+
+        login() {
+            axios.post(this.authurl, this.auth)
+                .then(response => {
+                    this.jwtToken = response.data.token;
+                    this.role = response.data.role;
+                    this.loggedIn = true;
+                    this.authMessage = "Authentication successful";
+                    this.getAll(); // Fetch songs immediately after successful login
+                }).catch(ex => {
+                    this.authMessage = "Authentication failed - " + ex.message;
+                });
+        },
+        logout() {
+            this.jwtToken = null;
+            this.role = null;
+            this.loggedIn = false;
+            this.auth = { username: "", password: "" };
+            this.songs = [];
+            this.message = null;
+            this.authMessage = "Logged out successfully";
+        },
+
+
+
+
+        // Get all songs with optional filtering
         async getAll() {
             try {
-                const response = await axios.get(this.baseUrl, {
+                const config = {
                     params: { search: this.search }
-                });
+                };
+                if (this.jwtToken) {
+                    config.headers = {
+                        'Authorization': `Bearer ${this.jwtToken}`
+                    };
+                }
+                const response = await axios.get(this.baseUrl, config);
                 this.songs = response.data;
             }
             catch (error) {
                 console.error(error);
-                alert("Error retrieving songs!");
+                alert("Error retrieving songs!!");
             }
         },                //add method
-                async add() {
-                    try {
-                        
-                        await axios.post(this.baseUrl, this.adddata);
-                        this.getAll(); // Refresh the list after adding
-                    }
-                    catch{
-                        alert("error!")
-                    }
+        async add() {
+            try {
+                const config = {};
+                if (this.jwtToken) {
+                    config.headers = {
+                        'Authorization': `Bearer ${this.jwtToken}`
+                    };
                 }
-
-
+                await axios.post(this.baseUrl, this.adddata, config);
+                this.getAll(); // Refresh the list after adding
             }
+            catch {
+                alert("error!")
+            }
+        }
+
+
+    }
 }).mount("#app")
