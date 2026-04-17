@@ -54,6 +54,13 @@
             <button v-on:click="update">Update Song</button>
             <p v-if="updateMessage">{{ updateMessage }}</p>
         </div>
+
+        <div v-if="role === 'Admin'">
+            <h2>Delete Song</h2>
+            <input v-model.number="deleteId" placeholder="Song ID to delete" type="number" />
+            <button v-on:click="deleteSong(deleteId)">Delete Song</button>
+            <p v-if="deleteMessage">{{ deleteMessage }}</p>
+        </div>
     </div>
     <script src="index.js"></script>
 </body>
