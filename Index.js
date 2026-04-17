@@ -19,7 +19,16 @@ Vue.createApp({
             jwtToken: "",
             role: null,
             loggedIn: false,
-            message: ""
+            message: "",
+            updateData: {
+                id: "",
+                title: "",
+                artist: "",
+                duration: "",
+                publicationYear: ""
+            },
+            updateMessage: ""
+
         }
     },
     methods: {
@@ -82,8 +91,34 @@ Vue.createApp({
             catch {
                 alert("error!")
             }
+        },
+        // Update method
+        async update() {
+            if (!this.updateData.id || !this.updateData.title || !this.updateData.artist || !this.updateData.duration || !this.updateData.publicationYear) {
+                alert("Please fill in all fields.");
+                return;
+            }
+            const url = this.baseUrl + "/" + this.updateData.id;
+            try {
+                const config = {};
+                if (this.jwtToken) {
+                    config.headers = {
+                        'Authorization': `Bearer ${this.jwtToken}`
+                    };
+                }
+                await axios.put(url, this.updateData, config);
+                this.updateData.id = "";
+                this.updateData.title = "";
+                this.updateData.artist = "";
+                this.updateData.duration = "";
+                this.updateData.publicationYear = "";
+                await this.getAll(); // Refresh the list after updating
+                this.updateMessage = "Song updated successfully!";
+            }
+            catch {
+                alert("error!")
+            }
         }
-
 
     }
 }).mount("#app")
