@@ -27,7 +27,9 @@ Vue.createApp({
                 duration: "",
                 publicationYear: ""
             },
-            updateMessage: ""
+            updateMessage: "",
+            deleteId: "",
+            deleteMessage: ""
 
         }
     },
@@ -118,7 +120,30 @@ Vue.createApp({
             catch {
                 alert("error!")
             }
-        }
+        },
+
+        async deleteSong(id) {
+            if (!id) {
+                this.deleteMessage = "Please enter a valid song ID";
+                return;
+            }
+
+            try {
+                const config = {};
+                if (this.jwtToken) {
+                    config.headers = {
+                        'Authorization': `Bearer ${this.jwtToken}`
+                    };
+                }
+                await axios.delete(`${this.baseUrl}/${id}`, config);
+                this.deleteMessage = "Song deleted successfully";
+                this.deleteId = "";
+                await this.getAll();
+            } catch (error) {
+                this.deleteMessage = "Error deleting song - it may not exist or you don't have permission";
+                console.error(error);
+            }
+        },
 
     }
 }).mount("#app")
