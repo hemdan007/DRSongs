@@ -44,7 +44,18 @@
             <input v-model="adddata.publicationYear" placeholder="Publication Year">
             <button v-on:click="add">Add Song</button>
         </div>
-        <script src="index.js"></script>
+        <div v-if="role === 'Admin'">
+            <h2>Update a song</h2>
+            <input v-model="updateData.id" placeholder="ID of song to update">
+            <input v-model="updateData.title" placeholder="New Title">
+            <input v-model="updateData.artist" placeholder="New Artist">
+            <input v-model="updateData.duration" placeholder="New Duration">
+            <input v-model="updateData.publicationYear" placeholder="New Publication Year">
+            <button v-on:click="update">Update Song</button>
+            <p v-if="updateMessage">{{ updateMessage }}</p>
+        </div>
+    </div>
+    <script src="index.js"></script>
 </body>
 
 </html>
